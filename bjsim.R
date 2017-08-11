@@ -722,16 +722,26 @@ simulation <- function(n,bet) {
 # The second variable changes the initial bet size for each round
 n <- 1000
 bet_size <- 100
-### simulation(n,bet_size)
+# simulation(n,bet_size)
 
 # Let's run multiple simulations and plot them
-number_of_simulations <- 10
+number_of_simulations <- 200
 
 # Plot the line charts
-plot(0,type="n",ylim=c(-100*bet_size,100*bet_size), xlim=c(0, n+1), xlab="Round", ylab="Profit/loss")
-title(paste("Blackjack sim,",n,"hands played,","bet size",bet_size,sep=" "))
-colors <- rainbow(number_of_simulations)
+# plot(0,type="n",ylim=c(-100*bet_size,100*bet_size), xlim=c(0, n+1), xlab="Round", ylab="Profit/loss")
+# title(paste("Blackjack sim,",n,"hands played,","bet size",bet_size,sep=" "))
+# colors <- rainbow(number_of_simulations)
+# for (i in 1:number_of_simulations) {
+#    invisible(capture.output(balances <- simulation(n,bet_size))) # I suppress the printed messages
+#    lines(balances, col=colors[i],lwd=2,lty=1)
+# }
+
+# Or, plot a histogram of ending profit/loss
+histogram <- NULL
 for (i in 1:number_of_simulations) {
-   invisible(capture.output(balances <- simulation(n,bet_size)))
-   lines(balances, col=colors[i],lwd=2,lty=1)
+    invisible(capture.output(balances <- simulation(n,bet_size)))
+    histogram <- c(histogram,tail(balances,n=1))# I suppress the printed messages
+    print(paste("Step",i))
 }
+hist(histogram, breaks=20, main=paste("Histogram of",number_of_simulations,"simulations"), 
+     col="gold", xlab="Ending Profit/Loss")
