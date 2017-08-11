@@ -736,12 +736,18 @@ number_of_simulations <- 200
 #    lines(balances, col=colors[i],lwd=2,lty=1)
 # }
 
-# Or, plot a histogram of ending profit/loss
+# Or, plot a histogram/density plot of ending profit/loss
 histogram <- NULL
 for (i in 1:number_of_simulations) {
     invisible(capture.output(balances <- simulation(n,bet_size)))
     histogram <- c(histogram,tail(balances,n=1))# I suppress the printed messages
     print(paste("Step",i))
 }
-hist(histogram, breaks=20, main=paste("Histogram of",number_of_simulations,"simulations"), 
-     col="gold", xlab="Ending Profit/Loss")
+
+# Histogram
+# hist(histogram, breaks=20, main=paste("Histogram of",number_of_simulations,"simulations"), col="gold", xlab="Ending Profit/Loss")
+
+# Or a density plot
+plot(density(histogram), main="Blackjack simulation density plot", col="gold", lwd=2, xlab="Profit/Loss", ylab="Density")
+polygon(density(histogram), col=rgb(1,215/255,0,0.2), border="gold")
+abline(v=0, lty=2)
